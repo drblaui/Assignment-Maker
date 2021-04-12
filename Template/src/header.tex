@@ -1,0 +1,202 @@
+\documentclass[
+	10pt,								% globale Schriftgröße
+	parskip=half-,						% setzt Absatzabstand hoch
+	paper=a4,							% Format
+	english,ngerman,					% lädt Sprachpakete
+	]{scrartcl}							% Dokumentenklasse
+
+% //////////////////// Pakete laden ////////////////////
+\usepackage{amsmath}			% MUSS vor fontspec geladen werden
+\usepackage{mathtools}			% modifiziert amsmath
+\usepackage{amssymb}			% mathematische symbole, für \ceckmarks
+\usepackage{amsthm}				% für proof
+\usepackage{mathrsfs}			% für \mathscr
+\usepackage{latexsym}
+\usepackage{marvosym}				% für Lightning
+
+\usepackage{fontspec} 			% funktioniert nur mit den neueren Compilern z.B. XeLaTeX
+\usepackage{microtype}			% für bessere Worttrennung
+\usepackage[ngerman]{babel} 	% Spracheinstellung
+\usepackage{lmodern}			% verändert verwendete Schriftart, damit sie weniger pixelig ist
+
+\usepackage{verbatim}
+\usepackage{listings}			% Für Quellcode
+
+\usepackage{graphicx}
+\usepackage{tabularx}			% für Tabellen mit gleicher Spaltenbreite und automatischen Umbrüchen
+\usepackage{fullpage}
+\usepackage{multirow}			% für multirow in tabulars
+\usepackage{rotate}
+\usepackage[cmyk,table]{xcolor} % um Farben zu benutzen, kann mehr als das Paket color
+\usepackage[					% Verlinkungen
+	colorlinks,					% farbige Schrift, statt farbiger Rahmen
+	linktocpage,				% verlinkt im Abb.Verzeichnis Seitenzahl statt Bildunterschrift
+	linkcolor=blue				% setzt Farbe der Links auf blau
+	]{hyperref}					% nur für digitale Anwendungen, url = "http://www.example.com"
+\usepackage{url}				% für Webadressen wie e-mail usw.: "\url{http://www.example.com}"
+
+\usepackage{enumerate}			% für versch. Aufzählungezeichen wie z.B. a)
+\usepackage{xspace}				% folgt ein Leerzeichen nach einem \Befehl, wird es nicht verschluckt.
+\usepackage{cancel}				% für das Durchstreichen u.a. in Matheformeln mit \cancel
+\usepackage{float}              % zum Forcieren der Position von figure-Umgebungen
+
+% zum Zeichnen (u.a. von Graphen)
+\usepackage{fp}
+\usepackage{tikz}
+\usetikzlibrary{tikzmark}			% für \tikzmark{toRemember}
+\usetikzlibrary{positioning}	% verbesserte Positionierung der Knoten
+\usetikzlibrary{automata}		% für Automaten (GTI)
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes}
+\usetikzlibrary{decorations.pathmorphing}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{decorations.shapes}
+\usetikzlibrary{decorations.text}
+
+% //////////////////// Syntaxhighlighting ////////////////////
+\lstloadlanguages{Python, Haskell, [LaTeX]TeX, Java}
+\lstset{
+   basicstyle=\footnotesize\ttfamily,	% \scriptsize the size of the fonts that are used for the code
+   backgroundcolor = \color{bgcolour},	% legt Farbe der Box fest
+   breakatwhitespace=false,	% sets if automatic breaks should only happen at whitespace
+   breaklines=true,			% sets automatic line breaking
+   captionpos=t,				% sets the caption-position to bottom, t for top
+   commentstyle=\color{codeblue}\ttfamily,% comment style
+   frame=single,				% adds a frame around the code
+   keepspaces=true,			% keeps spaces in text, useful for keeping indentation
+							% of code (possibly needs columns=flexible)
+   keywordstyle=\bfseries\ttfamily\color{codepurple},% keyword style
+   numbers=left,				% where to put the line-numbers;
+   							% possible values are (none, left, right)
+   numberstyle=\tiny\color{codegreen},	% the style that is used for the line-numbers
+   numbersep=5pt,			% how far the line-numbers are from the code
+   stepnumber=1,				% nummeriert nur jede i-te Zeile
+   showspaces=false,			% show spaces everywhere adding particular underscores;
+							% it overrides 'showstringspaces'
+   showstringspaces=false,	% underline spaces within strings only
+   showtabs=false,			% show tabs within strings adding particular underscores
+   flexiblecolumns=false,
+   tabsize=1,				% the step between two line-numbers. If 1: each line will be numbered
+   stringstyle=\color{orange}\ttfamily,	% string literal style
+   numberblanklines=false,				% leere Zeilen werden nicht mitnummeriert
+   xleftmargin=1.2em,					% Abstand zum linken Layoutrand
+   xrightmargin=0.4em,					% Abstand zum rechten Layoutrand
+   aboveskip=2ex, 
+}
+
+\lstdefinestyle{py}{
+   language=Python,
+}
+\lstdefinestyle{hs}{
+   language=Haskell,
+}
+\lstdefinestyle{tex}{
+	language=[LaTeX]TeX,
+	escapeinside={\%*}{*)},     % if you want to add LaTeX within your code
+	texcsstyle=*\bfseries\color{blue},% hervorhebung der tex-Schlüsselwörter
+	morekeywords={*,$,\{,\},\[,\],lstinputlisting,includegraphics,
+	rowcolor,columncolor,listoffigures,lstlistoflistings,
+	subsection,subsubsection,textcolor,tableofcontents,colorbox,
+	fcolorbox,definecolor,cellcolor,url,linktocpage,subtitle,
+	subject,maketitle,usetikzlibrary,node,path,addbibresource,
+	printbibliography},% if you want to add more keywords to the set
+     numbers=none,
+     numbersep=0pt,
+     xleftmargin=0.4em,
+}
+
+\lstdefinestyle{java}{
+	language=Java,
+	extendedchars=true,		% lets you use non-ASCII characters;
+   						% for 8-bits encodings only, does not work with UTF-8
+}
+
+\lstdefinelanguage[x64]{Assembler}     % add a "x64" dialect of Assembler
+   [x86masm]{Assembler} % based on the "x86masm" dialect
+   % with these extra keywords:
+   {morekeywords={CDQE,CQO,CMPSQ,CMPXCHG16B,JRCXZ,LODSQ,MOVSXD, %
+                  POPFQ,PUSHFQ,SCASQ,STOSQ,IRETQ,RDTSCP,SWAPGS, %
+                  rax,rdx,rcx,rbx,rsi,rdi,rsp,rbp, %
+                  r8,r8d,r8w,r8b,r9,r9d,r9w,r9b}
+}					% for 8-bits encodings only, does not work with UTF-8
+
+\lstdefinestyle{c}{
+	language=c,
+	extendedchars=true,		% for 8-bits encodings only, does not work with UTF-8
+}
+
+% //////////////////// eigene Kommandos ////////////////////
+\newcommand\FU{Freie Universität Berlin\xspace}% benötigt package xspace
+\newcommand\gdw{g.\,d.\,w.\xspace}
+\newcommand\oBdA{o.\,B.\,d.\,A.\xspace}
+\newcommand{\Eu}{\texteuro}
+\newcommand\N{\mathbb{N}\xspace}
+\newcommand\Q{\mathbb{Q}\xspace}
+\newcommand\R{\mathbb{R}\xspace}
+\newcommand\Z{\mathbb{Z}\xspace}
+\newcommand\ohneNull{\ensuremath{\backslash\lbrace 0\rbrace}}% \{0}
+\let\dhALT\dh	% Schreibt Befehl \dh in \dhALT um
+\renewcommand\dh{d.\,h.\xspace}	%renew überschreibt command \dh
+\newcommand\Bolt{\;\text{\LARGE\raisebox{-0.3em}{\Lightning}\normalsize}\xspace}% Blitz
+\newcommand\zz{\ensuremath{\raisebox{+0.25ex}{Z}% zu zeigen
+			\kern-0.4em\raisebox{-0.25ex}{Z}%
+			\;\xspace}}
+\newcommand{\from}{\ensuremath{\colon}}
+\newcommand{\floor}[1]{\lfloor{#1}\rfloor}
+\newcommand{\ceil}[1]{\lceil{#1}\rceil}
+ \renewcommand{\L}{\ensuremath{\mathcal{L}}\xspace}
+ \renewcommand{\P}{\ensuremath{\mathcal{P}}\xspace}
+ \newcommand{\NL}{\ensuremath{\mathcal{N}\kern-0.2em\mathcal{L}}\xspace}
+ \newcommand{\NP}{\ensuremath{\mathcal{NP}}\xspace}
+
+% //////////////////// Mathefunktionen ////////////////////
+\DeclareMathOperator{\Landau}{\mathcal{O}}
+\DeclareMathOperator{\True}{True}
+\DeclareMathOperator{\False}{False}
+
+% //////////////////// eigene Theoreme ////////////////////
+\newtheorem{theorem}{Satz}
+\newtheorem{corollary}[theorem]{Folgerung}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{observation}[theorem]{Beobachtung}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{Literatur}[theorem]{Literatur}
+% konfiguriert proof
+\makeatletter
+\newenvironment{Proof}[1][\proofname]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep6\p@\@plus6\p@\relax
+  \trivlist
+  \item[\hskip\labelsep
+%         \itshape
+        \bfseries
+    #1\@addpunct{.}]\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
+
+% //////////////////// eigene Farben ////////////////////
+\let\definecolor=\xdefinecolor
+\definecolor{FUgreen}{RGB}{153,204,0}
+\definecolor{FUblue}{RGB}{0,51,102}
+
+\definecolor{middlegray}{rgb}{0.5,0.5,0.5}
+\definecolor{lightgray}{rgb}{0.8,0.8,0.8}
+\definecolor{orange}{rgb}{0.8,0.3,0.3}
+\definecolor{azur}{rgb}{0,0.7,1}
+\definecolor{yac}{rgb}{0.6,0.6,0.1}
+\definecolor{Pink}{rgb}{1,0,0.6}
+
+\definecolor{bgcolour}{rgb}{0.97,0.97,0.97}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.35,0.35,0.35}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codeblue}{rgb}{0.4,0.5,1}
+
+% //////////////////// eigene Settings ////////////////////
+
+\textheight = 230mm		% Höhe des Satzspiegels / Layouts
+\footskip = 10ex			% Abstand zw. Fußzeile und Grundlinie letzter Textzeile
+\parindent 0pt			% verhindert Einrückung der 1. Zeile eines Absatzes
+\setkomafont{sectioning}{\rmfamily\bfseries}% setzt Ü-Schriften in Serifen, {disposition}
