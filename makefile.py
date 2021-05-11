@@ -5,7 +5,7 @@ class Makefile:
 		self.informations = {}
 		#Read Settings
 		if(self.settings_exist()):
-			with open("makefile_settings.json", 'r') as jsonfile:
+			with open("makefile_settings.json", 'r', encoding="UTF-8") as jsonfile:
 				# Exclude comments (saves space)
 				jsondata = ''.join(line for line in jsonfile if not ("_comment" in line))
 				self.informations = json.loads(jsondata)	
@@ -69,7 +69,7 @@ class Makefile:
 		"""
 		The whole \\\\ thing may look weird, but they are actually just two escaped backslashes
 		We need two Backslashes, because the first one escapes the second one in the latex file
-		It works and I didnt find any better option 
+		It works and I didn't find any better option 
 		"""
 		template_path = os.getcwd().replace("\\", "\\\\") + "\\\\Template\\\\"
 		target_folder = self.informations["output_folder"]
@@ -99,7 +99,7 @@ class Makefile:
 		Explanation: I save every line of the template file into a list, 
 		override the HARDCODED lines with the right data and overwrite the file altogether
 		"""
-		with open(target_folder + target_filename, "r") as copy:
+		with open(target_folder + target_filename, "r", encoding="UTF-8") as copy:
 			data = copy.readlines()
 
 		# Location of Template src
@@ -145,7 +145,7 @@ class Makefile:
 		else:
 			data = data + ["% /////////////////////// END DOKUMENT /////////////////////////\n\\end{document}"]
 
-		with open(target_folder + target_filename, "w") as outfile:
+		with open(target_folder + target_filename, "w", encoding="UTF-8") as outfile:
 			outfile.writelines(data)
 
 	def get_last_assignment(self):
